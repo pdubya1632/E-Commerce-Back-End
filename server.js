@@ -1,16 +1,14 @@
 const express = require('express');
 const routes = require('./routes');
-// import sequelize connection
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use('/api', routes);
+app.use(logger('dev'));
 
-app.use(routes);
-
-// sync sequelize models to the database, then turn on the server
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}!`);
-});
+app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
